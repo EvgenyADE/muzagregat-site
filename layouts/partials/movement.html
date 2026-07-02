@@ -1,0 +1,7 @@
+{{- if .no_movement -}}<span class="mv mv-base" title="первый выпуск">·</span>
+{{- else if .prev -}}
+  {{- $d := sub .prev .rank -}}
+  {{- if gt $d 0 -}}<span class="mv mv-up">▲{{ $d }}</span>
+  {{- else if lt $d 0 -}}<span class="mv mv-down">▼{{ mul -1 $d }}</span>
+  {{- else -}}<span class="mv mv-same">=</span>{{- end -}}
+{{- else -}}<span class="mv mv-new">NEW</span>{{- end -}}

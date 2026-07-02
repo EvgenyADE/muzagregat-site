@@ -1,0 +1,12 @@
+baseURL = "https://muzagregat.ru/"
+languageCode = "ru"
+title = "Музагрегат"
+disableKinds = ["taxonomy", "term"]
+[params]
+  description = "Машина, которая слушает русскую музыку. Ежемесячный чарт и квартальный Диск."
+  telegram = "https://t.me/muzagregat"
+  tophit = "https://tophit.com"
+[markup.goldmark.renderer]
+  unsafe = false
+[outputs]
+  home = ["HTML", "RSS"]

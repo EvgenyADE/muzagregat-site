@@ -1,0 +1,26 @@
+{{ define "main" }}
+<article class="issue">
+<h1>{{ .Title }}</h1>
+<div class="lead">{{ .Content }}</div>
+<table class="chart disc">
+<thead><tr><th>#</th><th class="opt">Тайм-код</th><th>Трек</th><th>Стаж</th><th class="opt">Роль</th></tr></thead>
+<tbody>
+{{ range .Params.positions }}
+<tr>
+<td class="rank">{{ .rank }}</td>
+<td class="opt mono" data-label="тайм-код">{{ .time }}</td>
+<td class="track" data-label="трек">{{ partial "flags.html" .flags }}<strong>{{ .artist }}</strong> — «{{ .track }}»</td>
+<td class="mono" data-label="стаж">{{ if .tenure }}{{ range seq .tenure }}✦{{ end }}{{ end }}</td>
+<td class="opt" data-label="роль">{{ .role }}</td>
+</tr>
+{{ end }}
+</tbody>
+</table>
+<p class="legend">✦✦✦ — держался все три месяца квартала · ⚙ AI · ⚑ иноагент</p>
+{{ partial "playlist.html" . }}
+<nav class="issue-nav">
+  {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
+  {{ with .NextInSection }}<a class="right" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}
+</nav>
+</article>
+{{ end }}

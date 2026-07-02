@@ -1,0 +1,14 @@
+{{ define "main" }}
+{{ $charts := where .Site.RegularPages "Section" "chart" }}
+{{ $latest := index ($charts.ByDate.Reverse) 0 }}
+<p class="tagline">{{ .Site.Params.description }}</p>
+{{ with $latest }}
+<article class="issue">
+<h1>{{ .Title }}</h1>
+<div class="lead">{{ .Content }}</div>
+{{ partial "chart-table.html" . }}
+{{ partial "playlist.html" . }}
+</article>
+{{ end }}
+<p><a href="{{ "/archive/" | relURL }}">Все выпуски →</a></p>
+{{ end }}

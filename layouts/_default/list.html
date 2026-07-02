@@ -1,0 +1,10 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+{{ $issues := where .Site.RegularPages "Section" "in" (slice "chart" "disc") }}
+<ul class="archive">
+{{ range $issues.ByDate.Reverse }}
+<li><span class="mono">{{ .Date.Format "2006-01" }}</span> <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ if eq .Section "disc" }} <span class="disc-mark">💿</span>{{ end }}</li>
+{{ end }}
+</ul>
+{{ end }}

@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article class="issue">
+<h1>{{ .Title }}</h1>
+<div class="lead">{{ .Content }}</div>
+{{ partial "chart-table.html" . }}
+{{ partial "playlist.html" . }}
+<nav class="issue-nav">
+  {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
+  {{ with .NextInSection }}<a class="right" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}
+</nav>
+</article>
+{{ end }}
