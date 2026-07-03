@@ -6,6 +6,7 @@ disableKinds = ["taxonomy", "term"]
   description = "Машина, которая слушает русскую музыку. Ежемесячный чарт и квартальный Диск."
   telegram = "https://t.me/muzagregat"
   tophit = "https://tophit.com"
+  telegram_chat = "https://t.me/muzagrechat"
 [markup.goldmark.renderer]
   unsafe = false
 [outputs]
