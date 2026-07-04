@@ -4,3 +4,11 @@
 <iframe frameborder="0" style="border:none;width:100%;height:450px;" src="{{ . }}" loading="lazy" title="Плейлист выпуска в Яндекс Музыке"></iframe>
 </div>
 {{ end }}
+{{ with .Params.mixcloud }}
+<div class="playlist">
+<h2>Послушать миксом</h2>
+<iframe width="100%" height="120" frameborder="0" loading="lazy" title="Микс на Mixcloud"
+  src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed={{ . | urlquery }}"></iframe>
+<p class="legend">Микс живёт на <a href="{{ . }}" rel="noopener">Mixcloud</a>. Из России плеер не откроется — сервис сам закрыл доступ с российских IP, так что понадобится VPN. Мы бы рады иначе, но это не наш флажок.</p>
+</div>
+{{ end }}
