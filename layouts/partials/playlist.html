@@ -1,8 +1,12 @@
-{{ with .Params.playlist_yandex }}
+{{ if or .Params.playlist_yandex .Params.playlist_yandex_embed }}
 <div class="playlist">
 <h2>Послушать</h2>
-<iframe frameborder="0" style="border:none;width:100%;height:450px;" src="{{ replace . "/playlists/" "/iframe/playlist/" }}" loading="lazy" title="Плейлист выпуска в Яндекс Музыке"></iframe>
-<p class="legend">Если плеер капризничает — <a href="{{ . }}" rel="noopener">плейлист в Яндекс Музыке</a>.</p>
+{{ with .Params.playlist_yandex_embed }}
+<iframe frameborder="0" allow="clipboard-write" style="border:none;width:100%;max-width:614px;height:556px;" src="{{ . }}" loading="lazy" title="Плейлист выпуска в Яндекс Музыке"></iframe>
+{{ end }}
+{{ with .Params.playlist_yandex }}
+<p class="legend"><a href="{{ . }}" rel="noopener">Плейлист в Яндекс Музыке</a></p>
+{{ end }}
 </div>
 {{ end }}
 {{ with .Params.mixcloud }}
