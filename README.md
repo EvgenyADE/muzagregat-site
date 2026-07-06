@@ -9,12 +9,13 @@
 - `content/method/`, `content/about/`, `content/archive/` — статичные страницы
 - `layouts/` — шаблоны (движение ▲▼/NEW считается из поля `prev`, виджет плейлиста рендерится только при заполненном `playlist_yandex`)
 - `scripts/convert_backfill.py` — разовый конвертер выпусков из папки проекта (уже прогнан, янв–май + Диск Q1)
+- `layouts/index.rss.xml` + `layouts/partials/rss-table.html` — RSS-фид `/index.xml`: полные выпуски (обзор + таблица), чарты и Диски
 - `.github/workflows/deploy.yml` — сборка и деплой на GitHub Pages при push в main
 - `public/` — локальная сборка для предпросмотра (в git не попадает)
 
 ## Добавить новый выпуск
 
-Положить `content/chart/2026-07.md` по образцу соседних (frontmatter: title, period, date, positions с rank/prev/artist/track/flags; тело = обзор месяца) → push в main → через ~2 мин выпуск на сайте. Поле `playlist_yandex` добавить, когда плейлист создан.
+Положить `content/chart/2026-07.md` по образцу соседних (frontmatter: title, period, date, positions с rank/prev/artist/track/flags; тело = обзор месяца). `date` — дата публикации: 1-е число СЛЕДУЮЩЕГО месяца (чарт июля → `2026-08-01`); в архиве месяц выпуска показывается из `period` → push в main → через ~2 мин выпуск на сайте. Поле `playlist_yandex` добавить, когда плейлист создан.
 
 ## Запуск (разовые шаги, руками)
 

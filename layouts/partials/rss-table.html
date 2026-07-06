@@ -1,0 +1,19 @@
+{{- $base := site.BaseURL -}}
+{{- if eq .Type "chart" -}}
+{{- $nomove := .Params.no_movement -}}
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>#</th><th>Движ.</th><th>Трек</th><th>Релиз</th></tr>
+{{- range .Params.positions }}
+<tr><td>{{ .rank }}</td><td>{{ if $nomove }}·{{ else if .prev }}{{ $d := sub .prev .rank }}{{ if gt $d 0 }}▲{{ $d }}{{ else if lt $d 0 }}▼{{ mul -1 $d }}{{ else }}={{ end }}{{ else }}NEW{{ end }}</td><td>{{ range .flags }}{{ if eq . "ai" }}⚙{{ end }}{{ if eq . "foreign_agent" }}⚑{{ end }}{{ if eq . "wild" }}◈{{ end }}{{ end }}<strong>{{ .artist }}</strong> — «{{ .track }}»{{ with .note }} ({{ . }}){{ end }}</td><td>{{ .date }}</td></tr>
+{{- end }}
+</table>
+<p>⚙ — сделано нейросетью · ⚑ — статус иноагента · ◈ — дикий слой (<a href="{{ $base }}method/">подробности</a>)</p>
+{{- else if eq .Type "disc" -}}
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>#</th><th>Время</th><th>Трек</th><th>Роль</th></tr>
+{{- range .Params.positions }}
+<tr><td>{{ .rank }}</td><td>{{ .time }}</td><td>{{ range .flags }}{{ if eq . "ai" }}⚙{{ end }}{{ if eq . "foreign_agent" }}⚑{{ end }}{{ if eq . "wild" }}◈{{ end }}{{ end }}<strong>{{ .artist }}</strong> — «{{ .track }}»</td><td>{{ .role }}</td></tr>
+{{- end }}
+</table>
+{{- with .Params.playlist_yandex }}<p><a href="{{ . }}">Плейлист на Яндекс Музыке</a></p>{{ end -}}
+{{- end -}}
