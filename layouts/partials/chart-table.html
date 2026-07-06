@@ -1,5 +1,5 @@
 <table class="chart">
-<thead><tr><th>#</th><th>Движ.</th><th>Трек</th><th class="opt">Тип</th><th class="opt">Релиз</th></tr></thead>
+<thead><tr><th>#</th><th>Движ.</th><th>Трек</th><th class="opt">Релиз</th></tr></thead>
 <tbody>
 {{ $nomove := .Params.no_movement }}
 {{ range .Params.positions }}
@@ -7,7 +7,6 @@
 <td class="rank">{{ .rank }}</td>
 <td class="move" data-label="движение">{{ partial "movement.html" (dict "rank" .rank "prev" .prev "no_movement" $nomove) }}</td>
 <td class="track" data-label="трек">{{ partial "flags.html" .flags }}<strong>{{ .artist }}</strong> — «{{ .track }}»{{ with .note }}<span class="note">{{ . }}</span>{{ end }}</td>
-<td class="opt" data-label="тип">{{ .type }}</td>
 <td class="opt" data-label="релиз">{{ .date }}</td>
 </tr>
 {{ end }}
