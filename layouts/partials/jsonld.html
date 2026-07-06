@@ -1,0 +1,31 @@
+{{- if and .IsPage (or (eq .Type "chart") (eq .Type "disc")) .Params.positions -}}
+{{- $tracks := slice -}}
+{{- range .Params.positions -}}
+  {{- $tracks = $tracks | append (dict
+        "@type" "MusicRecording"
+        "position" .rank
+        "name" .track
+        "byArtist" (dict "@type" "MusicGroup" "name" .artist)) -}}
+{{- end -}}
+{{- $j := dict
+    "@context" "https://schema.org"
+    "@type" "MusicPlaylist"
+    "name" .Title
+    "url" .Permalink
+    "description" (default site.Params.description .Description)
+    "datePublished" (.Date.Format "2006-01-02")
+    "inLanguage" "ru"
+    "numTracks" (len .Params.positions)
+    "publisher" (dict "@type" "Organization" "name" "Музагрегат" "url" site.BaseURL)
+    "track" $tracks -}}
+<script type="application/ld+json">{{ $j | jsonify | safeJS }}</script>
+{{- else if .IsHome -}}
+{{- $j := dict
+    "@context" "https://schema.org"
+    "@type" "WebSite"
+    "name" site.Title
+    "url" site.BaseURL
+    "description" site.Params.description
+    "inLanguage" "ru" -}}
+<script type="application/ld+json">{{ $j | jsonify | safeJS }}</script>
+{{- end -}}
