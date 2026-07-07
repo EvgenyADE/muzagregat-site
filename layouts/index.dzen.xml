@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>{{ site.Title }}</title>
+<link>{{ site.BaseURL }}</link>
+<language>ru</language>
+<description>{{ site.Params.description }}</description>
+{{- $issues := where site.RegularPages "Section" "in" (slice "chart" "disc") }}
+{{- $static := where site.RegularPages "RelPermalink" "in" (slice "/about/" "/method/") }}
+{{- $all := union $issues $static }}
+{{- range $all.ByDate.Reverse }}
+{{- $c := .Content | replaceRE "<(/?)strong>" "<${1}b>" | replaceRE "<(/?)em>" "<${1}i>" | replaceRE "href=\"/" (printf "href=\"%s" site.BaseURL) }}
+<item>
+<title>{{ .Title }} — Музагрегат</title>
+<link>{{ .Permalink }}</link>
+<guid>{{ .Permalink }}</guid>
+{{- $pd := .Date }}{{ if $pd.IsZero }}{{ $pd = time.AsTime "2026-07-01T00:00:00Z" }}{{ end }}
+<pubDate>{{ $pd.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+<media:rating scheme="urn:simple">nonadult</media:rating>
+<category>native-draft</category>
+<category>format-article</category>
+<category>comment-all</category>
+<enclosure url="{{ "og-default.png" | absURL }}" type="image/png"/>
+<description><![CDATA[{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}]]></description>
+<content:encoded><![CDATA[{{ $c }}
+{{- if and (eq .Type "chart") .Params.positions }}
+<h2>Чарт: {{ len .Params.positions }} позиций</h2>
+<ol>
+{{- $nomove := .Params.no_movement }}
+{{- range .Params.positions }}
+<li>{{ .artist }} — «{{ .track }}»{{ if not $nomove }}{{ if .prev }}{{ $d := sub .prev .rank }}{{ if gt $d 0 }} (▲{{ $d }}){{ else if lt $d 0 }} (▼{{ mul -1 $d }}){{ else }} (=){{ end }}{{ else }} (новинка){{ end }}{{ end }}{{ range .flags }}{{ if eq . "ai" }} ⚙{{ end }}{{ if eq . "foreign_agent" }} ⚑{{ end }}{{ if eq . "wild" }} ◈{{ end }}{{ end }}</li>
+{{- end }}
+</ol>
+<p>⚙ — сделано нейросетью · ⚑ — статус иноагента · ◈ — дикий слой. Полная таблица с движением, лейблами и датами релизов — <a href="{{ .Permalink }}">на сайте</a>.</p>
+{{- end }}
+{{- if and (eq .Type "disc") .Params.positions }}
+<h2>Треклист: {{ len .Params.positions }} треков</h2>
+<ol>
+{{- range .Params.positions }}
+<li>{{ .artist }} — «{{ .track }}»{{ with .role }} — {{ . }}{{ end }}</li>
+{{- end }}
+</ol>
+{{- with .Params.playlist_yandex }}
+<p><a href="{{ . }}">Плейлист на Яндекс Музыке</a></p>
+{{- end }}
+{{- end }}
+<p><b>Музагрегат</b> — машина, которая слушает русскую музыку. Свежие выпуски: <a href="{{ site.BaseURL }}">muzagregat.ru</a> и <a href="{{ site.Params.telegram }}">телеграм-канал</a>.</p>]]></content:encoded>
+</item>
+{{- end }}
+</channel>
+</rss>

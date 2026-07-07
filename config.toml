@@ -9,5 +9,9 @@ disableKinds = ["taxonomy", "term"]
   telegram_chat = "https://t.me/muzagrechat"
 [markup.goldmark.renderer]
   unsafe = false
+[outputFormats.dzen]
+  mediaType = "application/rss+xml"
+  baseName = "dzen"
+  isPlainText = true
 [outputs]
-  home = ["HTML", "RSS"]
+  home = ["HTML", "RSS", "dzen"]
