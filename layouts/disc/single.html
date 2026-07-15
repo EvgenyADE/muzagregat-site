@@ -2,6 +2,27 @@
 <article class="issue">
 <h1>{{ .Title }}</h1>
 <div class="lead">{{ .Content }}</div>
+{{ if .Params.chapters }}
+{{ range .Params.chapters }}
+<h2>{{ .heading }}</h2>
+{{ with .prose }}<div class="lead">{{ . | markdownify }}</div>{{ end }}
+<table class="chart disc">
+<thead><tr><th>#</th><th class="opt">Тайм-код</th><th>Трек</th><th>Стаж</th><th class="opt">Роль</th></tr></thead>
+<tbody>
+{{ range .positions }}
+<tr>
+<td class="rank">{{ .rank }}</td>
+<td class="opt mono" data-label="тайм-код">{{ .time }}</td>
+<td class="track" data-label="трек">{{ partial "flags.html" .flags }}<strong>{{ .artist }}</strong> — «{{ .track }}»</td>
+<td class="mono" data-label="стаж">{{ if .wild }}◈{{ else if .tenure }}{{ range seq .tenure }}✦{{ end }}{{ end }}</td>
+<td class="opt" data-label="роль">{{ .role }}</td>
+</tr>
+{{ end }}
+</tbody>
+</table>
+{{ end }}
+{{ with .Params.epilogue }}<div class="lead">{{ . | markdownify }}</div>{{ end }}
+{{ else }}
 <table class="chart disc">
 <thead><tr><th>#</th><th class="opt">Тайм-код</th><th>Трек</th><th>Стаж</th><th class="opt">Роль</th></tr></thead>
 <tbody>
@@ -10,13 +31,14 @@
 <td class="rank">{{ .rank }}</td>
 <td class="opt mono" data-label="тайм-код">{{ .time }}</td>
 <td class="track" data-label="трек">{{ partial "flags.html" .flags }}<strong>{{ .artist }}</strong> — «{{ .track }}»</td>
-<td class="mono" data-label="стаж">{{ if .tenure }}{{ range seq .tenure }}✦{{ end }}{{ end }}</td>
+<td class="mono" data-label="стаж">{{ if .wild }}◈{{ else if .tenure }}{{ range seq .tenure }}✦{{ end }}{{ end }}</td>
 <td class="opt" data-label="роль">{{ .role }}</td>
 </tr>
 {{ end }}
 </tbody>
 </table>
-<p class="legend">✦✦✦ — держался все три месяца квартала · ⚙ AI · ⚑ иноагент</p>
+{{ end }}
+<p class="legend">{{ .Params.legend | default "✦✦✦ — держался все три месяца квартала · ⚙ AI · ⚑ иноагент" }}</p>
 {{ partial "playlist.html" . }}
 <nav class="issue-nav">
   {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
