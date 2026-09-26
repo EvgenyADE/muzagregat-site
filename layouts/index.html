@@ -1,14 +1,18 @@
 {{ define "main" }}
+{{ $discs := where .Site.RegularPages "Section" "disc" }}
+{{ $latestDisc := index ($discs.ByDate.Reverse) 0 }}
 {{ $charts := where .Site.RegularPages "Section" "chart" }}
-{{ $latest := index ($charts.ByDate.Reverse) 0 }}
+{{ $latestChart := index ($charts.ByDate.Reverse) 0 }}
 <p class="tagline">{{ .Site.Params.description }}</p>
-{{ with $latest }}
+{{ with $latestChart }}
+<aside class="chart-teaser">
+  <p>Свежий чарт: <a href="{{ .RelPermalink }}"><strong>{{ .Title }}</strong></a> — сорок позиций того, что на самом деле звучало. <a href="{{ "/chart/" | relURL }}">Все чарты →</a></p>
+</aside>
+{{ end }}
+{{ with $latestDisc }}
 <article class="issue">
-<h1>{{ .Title }}</h1>
-<div class="lead">{{ .Content }}</div>
-{{ partial "chart-table.html" . }}
-{{ partial "playlist.html" . }}
+{{ partial "disc-body.html" . }}
 </article>
 {{ end }}
-<p><a href="{{ "/archive/" | relURL }}">Все выпуски →</a></p>
+<p><a href="{{ "/disc/" | relURL }}">Все Диски →</a> · <a href="{{ "/chart/" | relURL }}">Все чарты →</a></p>
 {{ end }}
