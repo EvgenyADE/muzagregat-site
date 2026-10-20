@@ -9,6 +9,7 @@
 - `content/method/`, `content/about/`, `content/archive/` — статичные страницы
 - `layouts/` — шаблоны (движение ▲▼/NEW считается из поля `prev`, виджет плейлиста рендерится только при заполненном `playlist_yandex`)
 - `scripts/convert_backfill.py` — разовый конвертер выпусков из папки проекта (уже прогнан, янв–май + Диск Q1)
+- `layouts/index.tg.json` — машинный фид `/tg.json` для n8n-публикатора в Telegram: по выпуску — type/title/url/lead/top (топ-10 чарта с движением или полный треклист Диска)/плейлист
 - `layouts/index.rss.xml` + `layouts/partials/rss-table.html` — RSS-фид `/index.xml`: полные выпуски (обзор + таблица), чарты и Диски
 - `.github/workflows/deploy.yml` — сборка и деплой на GitHub Pages при push в main
 - `public/` — локальная сборка для предпросмотра (в git не попадает)

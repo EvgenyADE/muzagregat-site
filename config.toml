@@ -13,5 +13,9 @@ disableKinds = ["taxonomy", "term"]
   mediaType = "application/rss+xml"
   baseName = "dzen"
   isPlainText = true
+[outputFormats.tg]
+  mediaType = "application/json"
+  baseName = "tg"
+  isPlainText = true
 [outputs]
-  home = ["HTML", "RSS", "dzen"]
+  home = ["HTML", "RSS", "dzen", "tg"]

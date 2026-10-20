@@ -1,0 +1,33 @@
+{{- /* Machine feed for the Telegram publisher (n8n). One object per issue: charts and discs. */ -}}
+{{- $issues := where site.RegularPages "Section" "in" (slice "chart" "disc") -}}
+{{- $out := slice -}}
+{{- range $issues.ByDate.Reverse -}}
+  {{- $lead := .Summary | plainify | replaceRE "^\\s*Обзор месяца\\s*" "" | htmlUnescape | strings.TrimSpace -}}
+  {{- $top := slice -}}
+  {{- $nomove := .Params.no_movement -}}
+  {{- $limit := cond (eq .Type "chart") 10 100 -}}
+  {{- with .Params.positions }}{{ range first $limit . -}}
+    {{- $mv := "NEW" -}}
+    {{- if $nomove }}{{ $mv = "" }}{{ else if .prev }}{{ $d := sub .prev .rank }}{{ if gt $d 0 }}{{ $mv = printf "▲%d" $d }}{{ else if lt $d 0 }}{{ $mv = printf "▼%d" (mul -1 $d) }}{{ else }}{{ $mv = "=" }}{{ end }}{{ end -}}
+    {{- $top = $top | append (dict "rank" .rank "artist" .artist "track" .track "move" $mv "flags" (.flags | default slice)) -}}
+  {{- end }}{{ end -}}
+  {{- if and (eq .Type "disc") .Params.chapters -}}
+    {{- range .Params.chapters }}{{ range .positions -}}
+      {{- $top = $top | append (dict "rank" .rank "artist" .artist "track" .track "move" "" "flags" (.flags | default slice)) -}}
+    {{- end }}{{ end -}}
+  {{- end -}}
+  {{- $out = $out | append (dict
+      "guid" .Permalink
+      "type" .Type
+      "title" .Title
+      "period" (.Params.period | default "")
+      "date" (.Date.Format "2006-01-02")
+      "url" .Permalink
+      "description" (.Description | default "")
+      "lead" $lead
+      "top" $top
+      "playlist_yandex" (.Params.playlist_yandex | default "")
+      "mixcloud" (.Params.mixcloud | default "")
+  ) -}}
+{{- end -}}
+{{- dict "generated" (now.Format "2006-01-02T15:04:05Z07:00") "items" $out | jsonify (dict "indent" " ") -}}
